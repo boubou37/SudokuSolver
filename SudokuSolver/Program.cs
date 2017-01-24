@@ -11,7 +11,8 @@ namespace SudokuSolver
         static void Main(string[] args)
         {
             Sudoku s = new Sudoku();
-            s.IsValid(0);
+            LinkedList<int> positions = s.initPositionsFromGrid();
+            s.IsValid(positions.First);
             s.printGrid();
         }
     }

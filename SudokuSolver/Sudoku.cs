@@ -120,19 +120,19 @@ namespace SudokuSolver
             return true;
         }
 
-        public bool IsValid(int pos)
+        public bool IsValid(LinkedListNode<int> pos)
         {
-            if (pos == GridSize * GridSize)
+            if (pos == null)
             {
                 return true;
             }
 
-            int i = pos / GridSize;
-            int j = pos % GridSize;
+            int i = pos.Value / GridSize;
+            int j = pos.Value % GridSize;
 
             if (Grid[i, j] != 0)
             {
-                return IsValid(pos + 1);
+                return IsValid(pos.Next);
             }
 
             for (int val = 1; val <= GridSize; val++)
@@ -140,7 +140,7 @@ namespace SudokuSolver
                 if (validForCol(j, val) && validForRow(i, val) && validForSquare(i, j, val))
                 {
                     Grid[i, j] = val;
-                    if (IsValid(pos + 1))
+                    if (IsValid(pos.Next))
                     {
                         return true;
                     }
