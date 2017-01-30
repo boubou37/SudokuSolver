@@ -16,15 +16,15 @@ namespace SudokuSolver
         {
             this.GridSize = 9;
             int[,] cpy = {
-          {9,0,0,1,0,0,0,0,5},
-        {0,0,5,0,9,0,2,0,1},
-        {8,0,0,0,4,0,0,0,0},
-        {0,0,0,0,8,0,0,0,0},
-        {0,0,0,7,0,0,0,0,0},
-        {0,0,0,0,2,6,0,0,9},
-        {2,0,0,3,0,0,0,0,6},
-        {0,0,0,2,0,0,9,0,0},
-        {0,0,1,9,0,4,5,7,0}
+          {7,0,8,0,0,1,0,0,4},
+        {0,6,0,7,0,0,0,0,0},
+        {0,0,1,0,0,0,0,3,0},
+        {0,2,5,1,3,0,0,0,0},
+        {0,0,6,8,0,2,5,0,0},
+        {0,0,0,0,5,4,1,2,0},
+        {0,7,0,0,0,0,4,0,0},
+        {0,0,0,0,0,6,0,5,0},
+        {1,0,0,9,0,0,3,0,7}
             };
             this.Grid = cpy;
         }
@@ -33,7 +33,7 @@ namespace SudokuSolver
         {
             Dictionary<int, int> mapPos = new Dictionary<int, int>();
             List<int> ret = new List<int>();
-            int _i, _j, count = 0 ;
+            int _i, _j, count = 0;
             for (int i = 0; i < GridSize * GridSize; i++)
             {
                 _i = i / GridSize;
@@ -94,7 +94,7 @@ namespace SudokuSolver
         {
             for (int i = 0; i < GridSize; i++)
             {
-                if (Grid[i, GridSize - i] == val)
+                if (Grid[i, GridSize - i - 1] == val)
                 {
                     return false;
                 }
@@ -104,7 +104,7 @@ namespace SudokuSolver
 
         public bool validForSquare(int i, int j, int val)
         {
-            int sqLen = (int)Math.Sqrt(GridSize);
+            int sqLen = (int)Math.Sqrt(GridSize); // always an integer by definition of a square...
             int starti = i - (i % sqLen);
             int startj = j - (j % sqLen);
             for (int _i = starti; _i < starti + sqLen; _i++)
@@ -140,12 +140,14 @@ namespace SudokuSolver
                 if (validForCol(j, val) && validForRow(i, val) && validForSquare(i, j, val))
                 {
                     Grid[i, j] = val;
+                    //backtrack : this below is the "spying ahead" section
                     if (IsValid(pos.Next))
                     {
                         return true;
                     }
                 }
             }
+            //reset to 0 in case of reject
             Grid[i, j] = 0;
             return false;
         }
